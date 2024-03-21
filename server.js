@@ -74,7 +74,6 @@ app.put('/products/modifier/:id', (req, res) => {
   console.log(price)
   // Vérifiez les informations d'identification dans la base de données
   db.query('UPDATE products SET name = ? , price = ? WHERE id = ?', [name, price, id], (err, results) => {
-    console.log('-----------------------------------------')
     console.log(results)
     if(err){
       throw err;
@@ -84,22 +83,38 @@ app.put('/products/modifier/:id', (req, res) => {
   });
 });
 
-app.post('/create', (req, res) => {
-  const { categories_id, name, description, image, price, quantity} = req.body;
+app.delete('/products/delete/:id', (req, res) => {
+  const id = req.params.id;
+  console.log(id)
   // Vérifiez les informations d'identification dans la base de données
-  db.query('INSERT INTO products ( categories_id, name, description, image, price, quantity ) VALUES categories_id = ?, name = ?, description = ?, image = ?, price = ?, quantity = ?', 
+  db.query('DELETE FROM products WHERE id = ?', [id], (err, results) => {
+    console.log(results)
+    if(err){
+      throw err;
+    }
+    console.log('Produit supprimer avec succès')
+    res.status(200).json({message: `Le Produit avec l\'id ${id} à bien été supprimer`})
+  });
+});
+
+app.post('/products/create', (req, res) => {
+  const { categories_id, name, description, image, price, quantity} = req.body;
+  console.log(categories_id)
+  console.log(name)
+  console.log(description)
+  console.log(image)
+  console.log(price)
+  console.log(quantity)
+  // Vérifiez les informations d'identification dans la base de données
+  db.query('INSERT INTO products ( categories_id, name, description, image, price, quantity ) VALUES (?,?,?,?,?,?)', 
   [categories_id, name, description, image, price, quantity], (err, results) => {
     console.log(results)
 
-    if (results.length > 0) {
-      // Utilisateur authentifié avec succès
-      res.json({ message: 'Creer avec succes' });
-    } else {
-      // réponse complète lors de l'échec de la connexion
-      console.log('Unsuccessful create:', req.body);
-      // Informations d'identification incorrectes
-      res.status(401).json({ message: 'Impossible de creer le baie' });
+    if(err){
+      throw err;
     }
+    console.log('Produit créé avec succès')
+    res.status(200).json({message: `Le Produit à été creer`})
   });
 });
 
