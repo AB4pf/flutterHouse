@@ -45,7 +45,33 @@ app.get('/products', (req, res) => {
   )
 });
 
+// recuperation des produits avec un stocks haut 
+app.get('/products/stocks/haut', (req, res) => {
+  db.query('SELECT name, image, price FROM products WHERE quantity = (SELECT MAX(quantity) FROM products)',
+  (err, results) => {
+      if (err){
+          throw err;
+      }
+      res.json(results);
+      console.log(results);
+  }
+  )
+});
 
+// recuperation des produits avec un stocks bas 
+app.get('/products/stocksb/bas', (req, res) => {
+  db.query('SELECT name, image, price FROM products WHERE quantity = (SELECT MIN(quantity) FROM products)',
+  (err, results) => {
+      if (err){
+          throw err;
+      }
+      res.json(results);
+      console.log(results);
+  }
+  )
+});
+
+// page de connexion
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   console.log(email)
@@ -66,6 +92,7 @@ app.post('/login', (req, res) => {
   });
 });
 
+// modification des produits dans la BDD
 app.put('/products/modifier/:id', (req, res) => {
   const id = req.params.id;
   const { name, price } = req.body;
@@ -83,6 +110,7 @@ app.put('/products/modifier/:id', (req, res) => {
   });
 });
 
+// supprssion du produits dans la BDD
 app.delete('/products/delete/:id', (req, res) => {
   const id = req.params.id;
   console.log(id)
