@@ -47,7 +47,7 @@ app.get('/products', (req, res) => {
 
 // recuperation des produits avec un stocks haut 
 app.get('/products/stocks/haut', (req, res) => {
-  db.query('SELECT name, image, price FROM products WHERE quantity = (SELECT MAX(quantity) FROM products)',
+  db.query('SELECT name, image, price, quantity FROM products WHERE quantity = (SELECT MAX(quantity) FROM products)',
   (err, results) => {
       if (err){
           throw err;
@@ -59,8 +59,8 @@ app.get('/products/stocks/haut', (req, res) => {
 });
 
 // recuperation des produits avec un stocks bas 
-app.get('/products/stocksb/bas', (req, res) => {
-  db.query('SELECT name, image, price FROM products WHERE quantity = (SELECT MIN(quantity) FROM products)',
+app.get('/products/stocks/bas', (req, res) => {
+  db.query('SELECT name, image, price, quantity FROM products WHERE quantity = (SELECT MIN(quantity) FROM products)',
   (err, results) => {
       if (err){
           throw err;

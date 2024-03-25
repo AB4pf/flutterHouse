@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter_1/Models/products.dart';
+import 'package:flutter_1/Pages/stock.dart';
 
 void main() => runApp(const Produit());
 
@@ -258,8 +259,38 @@ class _ProduitPageState extends State<ProduitPage> {
   );
   }
 
-  
-  
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Accueil',
+      style: optionStyle,
+    ),
+    Text(
+      'Stock',
+      style: optionStyle,
+    ),
+  ];
+  void _itemClique(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 0) {
+        // Naviguer vers la page d'accueil
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Produit()),
+        );
+      } else if (index == 1) {
+        // Naviguer vers la page de stock
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Stock()),
+        );
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +314,7 @@ class _ProduitPageState extends State<ProduitPage> {
                         SizedBox(height: 20,),
                         Container(
                           width: 220,
-                          height: 230,
+                          height: 250,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             gradient: LinearGradient(
@@ -358,6 +389,21 @@ class _ProduitPageState extends State<ProduitPage> {
         onPressed: () {
           dialogue_2();
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance),
+            label: 'Accueil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_convenience_store),
+            label: 'Stock',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _itemClique,
+        selectedItemColor: Color(0xFF8b4513),
       ),
     );
   }

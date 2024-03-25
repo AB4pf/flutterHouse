@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // Importation des pages
 import 'package:flutter_1/Pages/login.dart';
 import 'package:flutter_1/Pages/products.dart';
+import 'package:flutter_1/Pages/stock.dart';
+
 
 
 
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const Login(),
         '/produit': (context) => const Produit(),
+        '/stock': (context) => const Stock(),
       },
     );
   }
