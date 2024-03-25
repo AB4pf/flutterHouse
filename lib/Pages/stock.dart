@@ -64,7 +64,7 @@ class _StockState extends State<Stock> {
     productsMin = minProducts();
   }
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -98,184 +98,190 @@ class _StockState extends State<Stock> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 100,),
-            FutureBuilder<List<Products>>(
-              future: productsMax,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        Products product = snapshot.data![index];
-                        return Column(
-                          children: [
-                            SizedBox(height: 20,),
-                            Container(
-                              width: 220,
-                              height: 200,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF8b4513),
-                                    Color(0xFFDEB887),
-                                  ]
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Niveaux de stock'),
+          backgroundColor: Color(0xFF8b4513),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 100,),
+              FutureBuilder<List<Products>>(
+                future: productsMax,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return Container(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          Products product = snapshot.data![index];
+                          return Column(
+                            children: [
+                              SizedBox(height: 20,),
+                              Container(
+                                width: 220,
+                                height: 200,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF8b4513),
+                                      Color(0xFFDEB887),
+                                    ]
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 20,),
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(100))
+                                      ),
+                                      child: Image.asset('assets/images/${product.image}',
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.network('${product.image}',
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Container(
+                                                width: 20,
+                                                height: 20,
+                                                color: Color(0xFF8b4513),
+                                              );
+                                            }
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      product.name, 
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      '\Stock : ${product.quantity}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 20,),
-                                  Container(
-                                    width: 100,
-                                    height: 100,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(100))
-                                    ),
-                                    child: Image.asset('assets/images/${product.image}',
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Image.network('${product.image}',
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Container(
-                                              width: 20,
-                                              height: 20,
-                                              color: Color(0xFF8b4513),
-                                            );
-                                          }
-                                        );
-                                      },
-                                    ),
+                              SizedBox(height: 30),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
+              FutureBuilder<List<Products>>(
+                future: productsMin,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return Container(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          Products product = snapshot.data![index];
+                          return Column(
+                            children: [
+                              SizedBox(height: 20,),
+                              Container(
+                                width: 220,
+                                height: 200,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF8b4513),
+                                      Color(0xFFDEB887),
+                                    ]
                                   ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    product.name, 
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 20,),
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(100))
+                                      ),
+                                      child: Image.asset('assets/images/${product.image}',
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.network('${product.image}',
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Container(
+                                                width: 20,
+                                                height: 20,
+                                                color: Color(0xFF8b4513),
+                                              );
+                                            }
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    '\Stock : ${product.quantity}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    SizedBox(height: 10),
+                                    Text(
+                                      product.name, 
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 10),
+                                    Text(
+                                      '\Stock : ${product.quantity}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 30),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                }
-              },
+                              SizedBox(height: 30),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance),
+              label: 'Accueil',
             ),
-            FutureBuilder<List<Products>>(
-              future: productsMin,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        Products product = snapshot.data![index];
-                        return Column(
-                          children: [
-                            SizedBox(height: 20,),
-                            Container(
-                              width: 220,
-                              height: 200,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF8b4513),
-                                    Color(0xFFDEB887),
-                                  ]
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 20,),
-                                  Container(
-                                    width: 100,
-                                    height: 100,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(100))
-                                    ),
-                                    child: Image.asset('assets/images/${product.image}',
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Image.network('${product.image}',
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Container(
-                                              width: 20,
-                                              height: 20,
-                                              color: Color(0xFF8b4513),
-                                            );
-                                          }
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    product.name, 
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    '\Stock : ${product.quantity}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 30),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                }
-              },
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_convenience_store),
+              label: 'Stock',
             ),
           ],
+          currentIndex: _selectedIndex,
+          onTap: _itemClique,
+          selectedItemColor: Color.fromARGB(255, 126, 61, 23),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_convenience_store),
-            label: 'Stock',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _itemClique,
-        selectedItemColor: Color.fromARGB(255, 126, 61, 23),
       ),
     );
   }
